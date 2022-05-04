@@ -96,12 +96,14 @@ export class WhatsappService implements OnApplicationShutdown {
     }
 
     private clean_downloads() {
-        if (fs.existsSync(this.FILES_FOLDER)) {
+        //check if the folder is readable and writeable
+        if (fs.existsSync(this.FILES_FOLDER) && fs.accessSync(this.FILES_FOLDER, fs.constants.F_OK)) {
+            //you really don't need to force if you have execution access.
             del([`${this.FILES_FOLDER}/*`], {force: true}).then((paths) =>
                 console.log('Deleted files and directories:\n', paths.join('\n'))
             )
         } else {
-            //create a folder with user only permission.
+            //create a folder with user only permission. If created
             fs.mkdirSync(this.FILES_FOLDER,'0700', true)
             this.log.log(`Directory '${this.FILES_FOLDER}' created from scratch`)
         }
