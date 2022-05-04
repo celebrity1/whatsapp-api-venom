@@ -101,7 +101,8 @@ export class WhatsappService implements OnApplicationShutdown {
                 console.log('Deleted files and directories:\n', paths.join('\n'))
             )
         } else {
-            fs.mkdirSync(this.FILES_FOLDER)
+            //create a folder with user only permission.
+            fs.mkdirSync(this.FILES_FOLDER,'0700', true)
             this.log.log(`Directory '${this.FILES_FOLDER}' created from scratch`)
         }
     }
